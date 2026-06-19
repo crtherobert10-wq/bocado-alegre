@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bocado Alegre</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #fcfcfc;
+            color: #333;
+        }
+
+        header {
+            background-color: #f7d000;
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #6d4c41;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .logo-circle {
+            background-color: #fff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #6d4c41;
+            font-weight: bold;
+            font-size: 16px;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        nav a:hover {
+            color: #d32f2f;
+        }
+
+        .cart-icon-container {
+            position: relative;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: #d32f2f;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .section {
+            display: none;
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Inicio Style */
+        .hero {
+            background-color: #fff3e0;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .hero h1 {
+            color: #d32f2f;
+            font-size: 36px;
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .portada-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+        }
+
+        .promo-container {
+            margin-top: 30px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+
+        .btn {
+            background-color: #d32f2f;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #b71c1c;
+        }
+
+        /* Menu Style */
+        .category-title {
+            color: #6d4c41;
+            border-left: 5px solid #f7d000;
+            padding-left: 10px;
+            margin: 25px 0 15px 0;
+            font-size: 22px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-bottom: 1px solid #eee;
+        }
+
+        .card-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .card-desc {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+            height: 40px;
+            overflow: hidden;
+        }
+
+        .card-footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #d32f2f;
+        }
+
+        .btn-sm {
+            background-color: #f7d000;
+            color: #6d4c41;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-sm:hover {
+            background-color: #e5be00;
+        }
+
+        /* Contacto Style */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .contact-info {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+
+        .contact-info h3 {
+            margin-bottom: 15px;
+            color: #6d4c41;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            color: #333;
+            margin: 15px 0;
+            padding: 12px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            transition: background 0.3s;
+            font-weight: bold;
+        }
+
+        .contact-link:hover {
+            background-color: #f0f0f0;
+        }
+
+        .fb-btn { color: #1877F2; border-left: 4px solid #1877F2; }
+        .wa-btn { color: #25D366; border-left: 4px solid #25D366; }
+
+        /* Carrito Style */
+        .cart-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item-info h4 {
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .cart-item-info p {
+            color: #d32f2f;
+            font-weight: bold;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .qty-btn {
+            background-color: #eee;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qty-btn:hover {
+            background-color: #ddd;
+        }
+
+        .cart-total {
+            margin-top: 25px;
+            text-align: right;
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .empty-cart-msg {
+            text-align: center;
+            color: #777;
+            padding: 40px 0;
+        }
+
+        footer {
+            background-color: #6d4c41;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <a class="logo" onclick="showSection('inicio')">
+                <div class="logo-circle">😊</div>
+                Bocado Alegre
+            </a>
+            <nav>
+                <a onclick="showSection('inicio')">Inicio</a>
+                <a onclick="showSection('menu')">Menú</a>
+                <a onclick="showSection('contacto')">Contáctanos</a>
+                <a onclick="showSection('carrito')" class="cart-icon-container">
+                    Carrito 🛒 <span class="cart-badge" id="cart-count">0</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- INICIO -->
+    <div id="inicio" class="section active">
+        <div class="hero">
+            <!-- PORTADA EN EL INICIO -->
+            <img src="PORTADA.jpeg" alt="Portada Bocado Alegre" class="portada-img">
+            <h1>¡Bienvenido a Bocado Alegre!</h1>
+            <p>Ven por el bocado que te va a alegrar el día. Antojitos, fresas preparadas, malteadas y más.</p>
+            <button class="btn" onclick="showSection('menu')" style="margin-bottom: 20px;">Ver Menú Completo</button>
+        </div>
+
+        <div class="promo-container" style="text-align: center;">
+            <h2 style="color: #6d4c41; margin-bottom: 20px;">🔥 ¡Promociones del Momento! 🔥</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+                <img src="Bocado Alegre Publicidad.jpeg" alt="Promoción Sabados 2x1" style="max-width: 100%; width: 450px; height: auto; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                <img src="BOCADOCRUNCH.jpeg" alt="Nueva Malteada Bocado Crunch" style="max-width: 100%; width: 450px; height: auto; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+            </div>
+        </div>
+    </div>
+
+    <!-- MENU -->
+    <div id="menu" class="section">
+        <h2 style="margin-bottom: 20px; color: #333;">Nuestro Menú</h2>
+        
+        <div class="category-title">Especialidades de Fresa</div>
+        <div class="grid">
+            <div class="card">
+                <img src="FRESASCONCHOCOLATE.jpeg" alt="Fresa con Chocolate" class="imagen-proyecto">
+                <div class="card-body">
+                    <div class="card-title">Fresa con Chocolate</div>
+                    <div class="card-desc">Fresas frescas cubiertas con deliciosa crema de chocolate de alta calidad.</div>
+                    <div class="card-footer">
+                        <span class="price">$90</span>
+                        <button class="btn-sm" onclick="addToCart('Fresa con Chocolate', 90)">Agregar 🛒</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <img src="FRESASPISTACHE.jpeg" alt="Fresa con Pistache" class="imagen-proyecto">
+                <div class="card-body">
+                    <div class="card-title">Fresa con Pistache</div>
+                    <div class="card-desc">Fresas preparadas con una espectacular y cremosa salsa de pistache premium.</div>
+                    <div class="card-footer">
+                        <span class="price">$100</span>
+                        <button class="btn-sm" onclick="addToCart('Fresa con Pistache', 100)">Agregar 🛒</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <img src="FRESASTRADICIONAL.jpeg" alt="Fresa Tradicional" class="imagen-proyecto">
+                <div class="card-body">
+                    <div class="card-title">Fresa Tradicional</div>
+                    <div class="card-desc">Las clásicas fresas con crema de la casa, decoradas con nuez o almendras.</div>
+                    <div class="card-footer">
+                        <span class="price">$85</span>
+                        <button class="btn-sm" onclick="addToCart('Fresa Tradicional', 85)">Agregar 🛒</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="category-title">Malteadas</div>
+        <div class="grid">
+            <div class="card">
+                <img src="BOCADOCRUNCH.jpeg" alt="Bocado Crunch" class="card-img">
+                <div class="card-body">
+                    <div class="card-title">Malteada Bocado Crunch</div>
+                    <div class="card-desc">¡La nueva malteada con Corn Pops, cremosidad y felicidad en cada sorbo!</div>
+                    <div class="card-footer">
+                        <span class="price">$80</span>
+                        <button class="btn-sm" onclick="addToCart('Malteada Bocado Crunch', 80)">Agregar 🛒</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <img src="MALTEADACHOCO.jpeg" alt="Malteada de Oreo" class="card-img">
+                <div class="card-body">
+                    <div class="card-title">Malteada de Oreo</div>
+                    <div class="card-desc">Para los amantes del Oreo. Deliciosa malteada cremosa con trozos de galleta y crema batida.</div>
+                    <div class="card-footer">
+                        <span class="price">$75</span>
+                        <button class="btn-sm" onclick="addToCart('Malteada de Oreo', 75)">Agregar 🛒</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <img src="MALTEADAFRESA.jpeg" alt="Malteada de Fresa" class="card-img">
+                <div class="card-body">
+                    <div class="card-title">Malteada de Fresa</div>
+                    <div class="card-desc">Cremosa, refrescante y con un toque espectacular de fresa, chispas y cereza.</div>
+                    <div class="card-footer">
+                        <span class="price">$75</span>
+                        <button class="btn-sm" onclick="addToCart('Malteada de Fresa', 75)">Agregar 🛒</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="category-title">Antojitos y Snacks</div>
+        <div class="grid">
+            <div class="card">
+                <img src="VASOBOCADO.jpeg" alt="Vaso Bocado Alegre" class="imagen-tarjeta">
+                <div class="card-body">
+                    <div class="card-title">Vaso Bocado Alegre</div>
+                    <div class="card-desc">Elote en capas con tus sabritas favoritas (Ruffles, Doritos, Cheetos, Tostitos) con queso, crema y aderezos.</div>
+
+                    <div class="card-footer">
+                        <span class="price">$120</span>
+                        <button class="btn-sm" onclick="addToCart('Vaso Bocado Alegre', 120)">Agregar 🛒</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <img src="MENU1.jpeg" alt="Elote en Vaso" class="imagen-proyecto">
+                <div class="card-body">
+                    <div class="card-title">Elote en Vaso (Grande)</div>
+                    <div class="card-desc">Tradicional elote preparado con crema, mayonesa, queso y chile del que pica o no pica.</div>
+                    <div class="card-footer">
+                        <span class="price">$70</span>
+                        <button class="btn-sm" onclick="addToCart('Elote en Vaso (Grande)', 70)">Agregar 🛒</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <img src="NACHO2.jpeg" alt="Charola de Nachos" class="imagen-tarjeta">
+                <div class="card-body">
+                    <div class="card-title">Charola de Nachos</div>
+                    <div class="card-desc">Crujientes totopos de la casa bañados en queso amarillo caliente y jalapeños.</div>
+                    <div class="card-footer">
+                        <span class="price">$65</span>
+                        <button class="btn-sm" onclick="addToCart('Charola de Nachos', 65)">Agregar 🛒</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <img src="MINIHOTCAKES.jpeg" alt="Mini Hot Cakes" class="imagen-proyecto">
+                <div class="card-body">
+                    <div class="card-title">Mini Hot Cakes</div>
+                    <div class="card-desc">Acompañados de chocolate o lechera, fresas, plátano y almendra o nuez.</div>
+                    <div class="card-footer">
+                        <span class="price">$100</span>
+                        <button class="btn-sm" onclick="addToCart('Mini Hot Cakes', 100)">Agregar 🛒</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTACTANOS -->
+    <div id="contacto" class="section">
+        <h2 style="margin-bottom: 20px; color: #333;">Contáctanos</h2>
+        <div class="contact-grid">
+            <div class="contact-info">
+                <h3>¡Pide o visítanos!</h3>
+                <p>Haz tus pedidos directamente por WhatsApp o síguenos en nuestras redes sociales para no perderte ninguna promoción.</p>
+                
+                <a href="https://wa.me/528261304660" target="_blank" class="contact-link wa-btn">
+                    💬 WhatsApp: 8261304660
+                </a>
+                
+                <a href="https://www.facebook.com/share/186dtAvE5Y/?mibextid=wwXIfr" target="_blank" class="contact-link fb-btn">
+                    👍 Facebook: Bocado Alegre
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- CARRITO -->
+    <div id="carrito" class="section">
+        <h2 style="margin-bottom: 20px; color: #333;">Tu Carrito de Compras</h2>
+        <div class="cart-container">
+            <div id="cart-items-list">
+                <!-- Se llena con JS -->
+            </div>
+            <div class="cart-total" id="cart-total-price">
+                Total: $0
+            </div>
+            <div style="text-align: right; margin-top: 20px;">
+                <button class="btn" onclick="checkoutWhatsApp()">Enviar pedido por WhatsApp 📲</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Bocado Alegre - ¡El bocado que te alegra el día!</p>
+    </footer>
+
+    <script>
+        let cart = [];
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(sec => {
+                sec.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+            window.scrollTo(0,0);
+        }
+
+        function addToCart(name, price) {
+            const existingItem = cart.find(item => item.name === name);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ name: name, price: price, quantity: 1 });
+            }
+            updateCartUI();
+        }
+
+        function changeQuantity(name, change) {
+            const item = cart.find(item => item.name === name);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    cart = cart.filter(i => i.name !== name);
+                }
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cart-count').innerText = totalCount;
+
+            const listContainer = document.getElementById('cart-items-list');
+            listContainer.innerHTML = '';
+
+            if (cart.length === 0) {
+                listContainer.innerHTML = '<p class="empty-cart-msg">Tu carrito está vacío. ¡Agrega algo delicioso del menú!</p>';
+                document.getElementById('cart-total-price').innerText = 'Total: $0';
+                return;
+            }
+
+            let total = 0;
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+
+                const itemRow = document.createElement('div');
+                itemRow.className = 'cart-item';
+                itemRow.innerHTML = `
+                    <div class="cart-item-info">
+                        <h4>${item.name}</h4>
+                        <p>$${item.price} c/u</p>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="qty-btn" onclick="changeQuantity('${item.name}', -1)">-</button>
+                        <span>${item.quantity}</span>
+                        <button class="qty-btn" onclick="changeQuantity('${item.name}', 1)">+</button>
+                        <span style="margin-left: 15px; font-weight: bold; width: 60px; text-align: right;">$${itemTotal}</span>
+                    </div>
+                `;
+                listContainer.appendChild(itemRow);
+            });
+
+            document.getElementById('cart-total-price').innerText = `Total: $${total}`;
+        }
+
+        function checkoutWhatsApp() {
+            if (cart.length === 0) {
+                alert('Tu carrito está vacío.');
+                return;
+            }
+            let message = '¡Hola Bocado Alegre! Me gustaría hacer el siguiente pedido:\n\n';
+            let total = 0;
+            cart.forEach(item => {
+                message += `• ${item.quantity}x ${item.name} ($${item.price} c/u) = $${item.price * item.quantity}\n`;
+                total += item.price * item.quantity;
+            });
+            message += `\n*Total: $${total}*`;
+            
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/528261304660?text=${encodedMessage}`;
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
+</body>
+</html>
